@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <!-- define the dependency 
+    	Note: the classes value point to the class that Implement 
+    	your services
+    	Such that in the bean the interfaces can accept them.
+    	
+    	A single service can be implemented by different classes as well
+    	Such that One can easily switch between different classes to Implement
+    	Here at the configuration e.g
+    	FortuneServiceImplement.java and FortuneServiceSecondImplement.java
+    	both can be injected to myFortuneService, as such the output of getFortune()
+    	will differ in the bean using the service
+    -->
+    
+     <!-- 
+     	this will create an Object of the service like this
+     	for Injection.
+     	
+    	FortuneServiceImplement fortuneServiceImplement = new FortuneServiceImplement();
+    -->
+    <bean id="myFortuneService"
+   
+    		class="com.luv2code.springdemo.FortuneServiceImplement">
+    	</bean>
+    	
+    	
+    <!-- 
+     	this will create an Object of the service like this
+     	for Injection.
+     	
+    	FortuneTwoServiceImplement fortuneTwoServiceImplement = new FortuneTwoServiceImplement();
+    -->
+   
+    <bean id="myFortuneTwoService"
+    		class="com.luv2code.springdemo.FortuneTwoServiceImplement">
+    	</bean>
+    
+    <!-- Define your beans here and inject the service you desire-->
+    
+    
+    <!-- Beans Classes Definition / IOC -->
+ 	<bean id="myCoach"
+ 		class="com.luv2code.springdemo.TrackCoach">	
+ 		
+ 		<!--
+ 			Constructor Injection
+ 			 
+ 			set up constructor injection 
+ 			this will then send fortuneTwoServiceImplement as parameter
+ 			to the TrackCoach Constructor
+ 			And then Inject fortuneTwoServiceImplement Object
+ 		-->
+ 		<constructor-arg ref="myFortuneTwoService" />
+ 	</bean>
+ 	
+ 	<!-- Injecting values from property to use in your Configuration -->
+ 	
+ 	<!-- load the properties file: sport.properties -->
+	<context:property-placeholder location="classpath:sport.properties"/>
+ 	
+ 	<bean id="myCricketCoach"
+ 		class="com.luv2code.springdemo.CricketCoach">	
+ 		<!-- 
+ 			Setter Injection
+ 			
+ 			set up setter Method injection 
+ 			this will then send fortuneServiceImplement as parameter
+ 			to the setFortuneService Method in TrackCoach.
+ 			
+ 			And then Inject fortuneServiceImplement Object
+ 			
+ 			Note: the configuration will run all the setter methods first once loaded
+ 			
+ 			Note: the standard in naming if in config you have 
+ 			myName - then in Object you should have the Method Name as setMyName()
+ 		-->
+ 		<property name="fortuneService" ref="myFortuneService" />
+ 		
+ 		<!-- 
+ 			Literal Injection
+ 			
+ 			You can configure other setter property for a bean
+ 			
+ 			Note: the standard in naming if in config you have 
+ 			myName - then in Object you should have the Method Name as setMyName()
+ 		-->
+ 		<!--
+ 		<property name="emailAddress" value="aabdulraheemsherif@gmail.com" />
+ 		<property name="phoneNo" value="08164377187" />
+ 		 -->
+ 		 
+ 		 <property name="emailAddress" value="${foo.email}" />
+ 		<property name="phoneNo" value="${foo.team}" />
+ 		
+ 	</bean>
+    
+</beans>
+
+
+
+
+
