@@ -20,12 +20,19 @@ public class CricketCoach implements Coach {
 	}
 	public void setEmailAddress(String email) {
 		emaiAdd = email;
-		System.out.println(emaiAdd);
 	}
 	
 	public void setPhoneNo(String phone) {
 		this.phone = phone;
-		System.out.println(phone);
+		
+	}
+
+	public String getEmaiAdd() {
+		return emaiAdd;
+	}
+
+	public String getPhone() {
+		return phone;
 	}
 
 	@Override
